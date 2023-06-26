@@ -14,9 +14,16 @@
         tools:layout_editor_absoluteY="1dp"
         tools:ignore="MissingConstraints">
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="420dp"
+            android:background="@color/purple_200"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinner_values"/>
+
         <Button
             android:id="@+id/fetch"
-            android:layout_width="378dp"
+            android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/go" />

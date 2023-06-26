@@ -8,6 +8,7 @@ import android.provider.CalendarContract
 import android.provider.CalendarContract.Colors
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -35,11 +36,14 @@ class MainActivity : AppCompatActivity() {
             val contentView = findViewById<TextView>(R.id.content)
             progressBar.isVisible = true
 
-            val response = apiService.getFacts()
+            val spinner = findViewById<Spinner>(R.id.spinner)
+            val count = spinner.selectedItemPosition+1
+
+            val response = apiService.getFacts(count)
             if(response.isSuccessful){
                 contentView.setTextColor(Color.GREEN)
                 response.body()?.apply {
-                    val text = mapIndexed{i, v -> "$i: ${v.text}"}.joinToString { "$it\n" }
+                    val text = mapIndexed{i, v -> "${i+1}: ${v.text}"}.joinToString("") { "$it\n" }
                     contentView.text = text
                 }
             }else{
