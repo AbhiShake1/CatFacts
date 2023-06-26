@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.isVisible = true
 
             val spinner = findViewById<Spinner>(R.id.spinner)
-            val count = spinner.selectedItemPosition + 1
+            val count = spinner.selectedItemPosition + 5
 
             try {
                 val response = apiService.getFacts(count)
