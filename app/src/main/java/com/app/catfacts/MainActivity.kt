@@ -17,6 +17,9 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -37,18 +40,29 @@ class MainActivity : AppCompatActivity() {
             progressBar.isVisible = true
 
             val spinner = findViewById<Spinner>(R.id.spinner)
-            val count = spinner.selectedItemPosition+1
+            val count = spinner.selectedItemPosition + 1
 
-            val response = apiService.getFacts(count)
-            if(response.isSuccessful){
-                contentView.setTextColor(Color.GREEN)
-                response.body()?.apply {
-                    val text = mapIndexed{i, v -> "${i+1}: ${v.text}"}.joinToString("") { "$it\n" }
-                    contentView.text = text
+            try {
+                val response = apiService.getFacts(count)
+                if (response.isSuccessful) {
+                    contentView.setTextColor(Color.GREEN)
+                    response.body()?.apply {
+                        val text = mapIndexed { i, v -> "${i + 1}: ${v.text}" }.joinToString("") { "$it\n" }
+                        contentView.text = text
+                    }
+                } else {
+                    contentView.setTextColor(Color.RED)
+                    contentView.text = response.errorBody()?.toString()
                 }
-            }else{
+            } catch (e: IOException) {
                 contentView.setTextColor(Color.RED)
-                contentView.text = response.errorBody()?.toString()
+                contentView.text = "Something went wrong"
+            } catch (e: SocketTimeoutException) {
+                contentView.setTextColor(Color.RED)
+                contentView.text = "Please check your internet connection"
+            } catch (e: UnknownHostException){
+                contentView.setTextColor(Color.RED)
+                contentView.text = "No internet"
             }
 
             progressBar.isVisible = false
