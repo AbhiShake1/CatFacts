@@ -12,6 +12,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import com.app.catfacts.databinding.ActivityMainBinding
 import com.app.catfacts.services.apiService
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -22,11 +23,14 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val btn = findViewById<Button>(R.id.fetch)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        val btn = binding.fetch
         btn.setOnClickListener {
             onFetch()
         }
@@ -35,11 +39,11 @@ class MainActivity : AppCompatActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     private fun onFetch(): Unit {
         GlobalScope.launch(Dispatchers.Main) {
-            val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-            val contentView = findViewById<TextView>(R.id.content)
+            val progressBar = binding.progressBar
+            val contentView = binding.content
             progressBar.isVisible = true
 
-            val spinner = findViewById<Spinner>(R.id.spinner)
+            val spinner = binding.spinner
             val count = spinner.selectedItemPosition + 5
 
             try {
