@@ -10,6 +10,7 @@ import retrofit2.http.Query
 public interface RestClient {
     // retrofit reference: https://github.com/square/retrofit
     @GET("facts/random/")
+    // suspend reference: https://kotlinlang.org/docs/composing-suspending-functions.html
     suspend fun getFacts(@Query("amount") amount: Int = 5): Response<List<CatsModel>>
 }
 
