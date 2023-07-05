@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 public interface RestClient {
+    // retrofit reference: https://github.com/square/retrofit
     @GET("facts/random/")
     suspend fun getFacts(@Query("amount") amount: Int = 5): Response<List<CatsModel>>
 }
